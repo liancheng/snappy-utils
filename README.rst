@@ -53,15 +53,15 @@ Run ``snappy`` without any arguments to check the usage description::
 
        -o, --output        Output file name.
 
-       -d, --decompression Decompression mode, enabled by default.  If the
-                           `--output' option is omitted and the input file
-                           name ends with `.snappy', the default output
-                           file name is the input file name without the
-                           `.snappy' suffix.
+       -d, --decompression Decompression mode.  If the `--output' option is
+                           omitted and the input file name ends with
+                           `.snappy', the default output file name is the
+                           input file name without the `.snappy' suffix.
 
-       -c, --compression   Compression mode.  If the `--output' option is
-                           omitted, the default  output file name is the
-                           input file name with a `.snappy' suffix.
+       -c, --compression   Compression mode, enabled by default.  If the
+                           `--output' option is omitted, the default
+                           output file name is the   input file name with a
+                           `.snappy' suffix.
 
 Samples:
 
