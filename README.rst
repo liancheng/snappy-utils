@@ -39,7 +39,7 @@ Build snappy-utils::
 
     $ sbt package
 
-Create a symbolic link to ``$SNAPPY_UTILS_HOME/bin/snappy`` under your one of your ``$PATH`` directory::
+Create a symbolic link to ``$SNAPPY_UTILS_HOME/bin/snappy`` under one of your ``$PATH`` directory::
 
     $ sudo ln -sf $SNAPPY_UTILS_HOME/bin/snappy /usr/bin
 
