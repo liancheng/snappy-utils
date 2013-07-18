@@ -14,8 +14,8 @@ object SnappyUtils extends App {
 
   codec.setConf(new Configuration())
 
-  var inputFile: String = null
-  var outputFile: String = null
+  var inputFile: Option[String] = None
+  var outputFile: Option[String] = None
   var isCompression = true
 
   def printUsage() {
@@ -42,7 +42,7 @@ object SnappyUtils extends App {
   def parse(args: List[String]) {
     args match {
       case ("-o" | "--output") :: value :: tail =>
-        outputFile = value
+        outputFile = Some(value)
         parse(tail)
 
       case ("-d" | "--decompress") :: tail =>
@@ -54,7 +54,7 @@ object SnappyUtils extends App {
         parse(tail)
 
       case value :: tail =>
-        inputFile = value
+        inputFile = Some(value)
         parse(tail)
 
       case Nil =>
@@ -67,34 +67,27 @@ object SnappyUtils extends App {
 
   parse(args.toList)
 
-  if (inputFile == null)
-    printUsage()
+  (isCompression, inputFile, outputFile) match {
+    case (true, Some(in: String), None) =>
+      outputFile = Some(in + extension)
 
-  if (outputFile == null)
-    if (isCompression)
-      outputFile = inputFile + extension
-    else
-      if (inputFile.endsWith(extension))
-        outputFile = inputFile.stripSuffix(extension)
-      else
-        printUsage()
+    case (false, Some(in: String), None) if in.endsWith(extension) =>
+      outputFile = Some(in.stripSuffix(extension))
+
+    case (_, Some(_), Some(_)) =>
+      ()
+
+    case _ =>
+      printUsage()
+  }
+
+  val in = new BufferedInputStream(new FileInputStream(inputFile.get))
+  val out = new BufferedOutputStream(new FileOutputStream(outputFile.get))
 
   if (isCompression)
-    compressFile(codec, inputFile, outputFile)
-  else
-    decompressFile(codec, inputFile, outputFile)
-
-  def compressFile(codec: CompressionCodec, inputFile: String, outputFile: String) {
-    val in = new BufferedInputStream(new FileInputStream(inputFile))
-    val out = new BufferedOutputStream(new FileOutputStream(outputFile))
     copy(in, codec.createOutputStream(out))
-  }
-
-  def decompressFile(codec: CompressionCodec, inputFile: String, outputFile: String) {
-    val in = new BufferedInputStream(new FileInputStream(inputFile))
-    val out = new BufferedOutputStream(new FileOutputStream(outputFile))
+  else
     copy(codec.createInputStream(in), out)
-  }
 
   def copy(in: InputStream, out: OutputStream) {
     val buffer = new Array[Byte](8192)
