@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ -L $0 ]; then
+  ARG0=`readlink $0`
+else
+  ARG0=$0
+fi
+
+DIRNAME=$(dirname "$ARG0")
+BASE_DIR=$(cd -P "$DIRNAME/.." && pwd)
+
+JAVA_LIBRARY_PATH=""
+
+for dir in `find $BASE_DIR/lib/native -type d`; do
+  JAVA_LIBRARY_PATH="$JAVA_LIBRARY_PATH:$dir"
+done
+
+JAVA_CLASSPATH=""
+
+for dir in `find $BASE_DIR/lib -name "*.jar"`; do
+  JAVA_CLASSPATH="$JAVA_CLASSPATH:$dir"
+done
+
+JAVA_JAR_FILE="$BASE_DIR/target/scala-2.9.3/snappy-utils_2.9.3-0.1.0.jar"
+
+scala -classpath $JAVA_CLASSPATH\
+      -Djava.library.path=$JAVA_LIBRARY_PATH\
+      $JAVA_JAR_FILE\
+      $@
