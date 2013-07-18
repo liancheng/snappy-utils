@@ -5,8 +5,8 @@ Snappy-utils is a command line utility tool for the Google Snappy compression li
 
 __ https://code.google.com/p/hadoop-snappy/
 
-How install
------------
+How to install
+--------------
 
 Checkout, build and install snappy_::
 
