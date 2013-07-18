@@ -63,5 +63,31 @@ Run ``snappy`` without any arguments to check the usage description::
                            omitted, the default  output file name is the
                            input file name with a `.snappy' suffix.
 
+Samples:
+
+*   Compress ``data.txt`` to ``data.txt.snappy``::
+
+        $ snappy -c data.txt
+
+    Or simply::
+
+        $ snappy data.txt
+
+*   Compress ``data.txt`` to ``compressed-data``::
+
+        $ snappy -c data.txt -o compression-data
+
+    or::
+
+        $ snappy -c data.txt -o compression-data
+
+*   Decompress ``data.txt.snappy`` to ``data.txt``::
+
+        $ snappy -d data.txt.snappy
+
+*   Decompress ``compression-data`` to ``data.txt``::
+
+        $ snappy -d compressed-data -o data.txt
+
 .. _snappy: https://code.google.com/p/hadoop-snappy/
 .. _hadoop-snappy: http://code.google.com/p/snappy/
